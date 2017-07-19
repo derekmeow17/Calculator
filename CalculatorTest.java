@@ -1,4 +1,4 @@
-package com.app.calculator;
+package git.Calculator;
 
 import static org.junit.Assert.*;
 
@@ -34,10 +34,15 @@ public class CalculatorTest {
 	}
 	
 	@Test
-	public void when_calculating_2_multiplies_4_should_return_8() {
-		Double result = calculator.calculate("2*4");
-		assertEquals(new Double(8), result);
+	public void when_calculating_1_plus_1_plus_2_should_return_4() {
+		Double result = calculator.calculate("1+1+2");
+		assertEquals(new Double(4), result);
+	}
+	
+	@Test
+	public void when_calculating_1_plus_1_plus_2_minus_4_should_return_0() {
+		Double result = calculator.calculate("1+1+2-4");
+		assertEquals(new Double(0), result);
 	}
 
 }
-
