@@ -3,7 +3,7 @@ package git.Calculator;
 public class Calculator {
 
 	public static void main(String[] args) {
-		System.out.println(parseTerm("4*-4"));
+		System.out.println(parseExp(""));
 	}
 
 	public static int findLastMinus(String s, int lastIndex) {
@@ -69,19 +69,21 @@ public class Calculator {
 			return opPow(parsePow(left), parsePow(right));
 		}
 	}
-	
-//	public static String parseExp(String evaluate) {
-//		int openBracketIndex = evaluate.indexOf('(');
-//		int closeBracketIndex = evaluate.indexOf(')');
-//		if (openBracketIndex == -1 && closeBracketIndex == -1)
-//			return parseTerm(evaluate);
-//		else {
-//			if (evaluate.indexOf('(', openBracketIndex) != -1)
-//				return parseExp(evaluate.substring(openBracketIndex+1, closeBracketIndex));
-//			else
-//				
-//		}
-//	}
+
+	public static String parseExp(String evaluate) {
+		int openBracketIndex = evaluate.lastIndexOf('(');
+		int closeBracketIndex = evaluate.indexOf(')', openBracketIndex);
+		if (openBracketIndex == -1 && closeBracketIndex == -1)
+			return parseTerm(evaluate);
+		else {
+			String tmp; // To store current bracket and contents inside
+			if (closeBracketIndex == evaluate.length() - 1)
+				tmp = evaluate.substring(openBracketIndex);
+			else
+				tmp = evaluate.substring(openBracketIndex, closeBracketIndex + 1);
+			return parseExp(evaluate.replace(tmp, parseExp(tmp.substring(1, tmp.length() - 1))));
+		}
+	}
 
 	public Double calculate(String evaluate) {
 		// TODO Auto-generated method stub
