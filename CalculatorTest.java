@@ -44,5 +44,17 @@ public class CalculatorTest {
 		Double result = calculator.calculate("1+1+2-4");
 		assertEquals(new Double(0), result);
 	}
+	
+	@Test
+	public void when_calculating_1_multiplies_2_plus_2_multiplies_n8_should_return_n14() {
+		Double result = calculator.calculate("1*2+2*-8");
+		assertEquals(new Double(-14), result);
+	}
+	
+	@Test
+	public void when_calculating_1_multiplies_2_plus_2_multiplies_n8_should_return_n() {
+		Double result = calculator.calculate("3-1*16/8+6+2^2");
+		assertEquals(new Double(11), result);
+	}
 
 }

@@ -3,7 +3,7 @@ package git.Calculator;
 public class Calculator {
 
 	public static void main(String[] args) {
-		System.out.println(parseTerm("1*2+2*-8"));
+		System.out.println(parseTerm("4*-4"));
 	}
 
 	public static int findLastMinus(String s, int lastIndex) {
@@ -11,7 +11,7 @@ public class Calculator {
 		if (index <= 0) // -1: can't find -ve sign; 0: 1st num is -ve
 			return -1;
 		else if (s.charAt(index - 1) == '+' || s.charAt(index - 1) == '-' || s.charAt(index - 1) == '*'
-				|| s.charAt(index - 1) == '/')
+				|| s.charAt(index - 1) == '/' || s.charAt(index - 1) == '^')
 			return findLastMinus(s, index - 1);
 		else
 			return index;
@@ -33,8 +33,8 @@ public class Calculator {
 		if (opIndex == evaluate.length() - 1) {
 			return parseFactor(evaluate);
 		} else {
-			String left = parseTerm(evaluate.substring(0, opIndex));
-			String right = parseTerm(evaluate.substring(opIndex + 1));
+			String left = evaluate.substring(0, opIndex);
+			String right = evaluate.substring(opIndex + 1);
 			return opAddSub(parseTerm(left), parseTerm(right), evaluate.charAt(opIndex));
 		}
 	}
@@ -51,13 +51,37 @@ public class Calculator {
 			}
 		}
 		if (opIndex == evaluate.length() - 1) {
-			return evaluate;
+			return parsePow(evaluate);
 		} else {
-			String left = parseTerm(evaluate.substring(0, opIndex));
-			String right = parseTerm(evaluate.substring(opIndex + 1));
+			String left = evaluate.substring(0, opIndex);
+			String right = evaluate.substring(opIndex + 1);
 			return opMulDiv(parseFactor(left), parseFactor(right), evaluate.charAt(opIndex));
 		}
 	}
+
+	public static String parsePow(String evaluate) {
+		int opIndex = evaluate.indexOf('^');
+		if (opIndex == -1)
+			return evaluate;
+		else {
+			String left = evaluate.substring(0, opIndex);
+			String right = evaluate.substring(opIndex + 1);
+			return opPow(parsePow(left), parsePow(right));
+		}
+	}
+	
+//	public static String parseExp(String evaluate) {
+//		int openBracketIndex = evaluate.indexOf('(');
+//		int closeBracketIndex = evaluate.indexOf(')');
+//		if (openBracketIndex == -1 && closeBracketIndex == -1)
+//			return parseTerm(evaluate);
+//		else {
+//			if (evaluate.indexOf('(', openBracketIndex) != -1)
+//				return parseExp(evaluate.substring(openBracketIndex+1, closeBracketIndex));
+//			else
+//				
+//		}
+//	}
 
 	public Double calculate(String evaluate) {
 		// TODO Auto-generated method stub
@@ -91,6 +115,30 @@ public class Calculator {
 			break;
 		}
 		return result.toString();
+	}
+
+	public static String opPow(String s1, String s2) {
+		double num1 = Double.parseDouble(s1);
+		double num2 = Double.parseDouble(s2);
+		return calculatePow(num1, (int) num2).toString();
+	}
+
+	public static Double calculatePow(double num1, double num2) {
+		if (num1 == 0)
+			return new Double(0);
+		else if (num2 == 0)
+			return new Double(1);
+
+		if (num2 == 1)
+			return num1;
+		else if (num2 == -1)
+			return num1;
+		else {
+			if (num2 > 1)
+				return num1 * calculatePow(num1, num2 - 1);
+			else
+				return 1 / num1 / calculatePow(num1, num2 + 1);
+		}
 	}
 
 }
