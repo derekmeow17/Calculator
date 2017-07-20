@@ -15,7 +15,7 @@ public class Calculator {
 
 	String parseTerm(String evaluate) {
 		// Find last add/sub operator in the formula
-		int opIndex = findValidOp(evaluate, '+', evaluate.length() - 1);
+		int opIndex = evaluate.lastIndexOf('+'); // findValidOp(evaluate, '+', evaluate.length() - 1);
 		int tmp = findValidOp(evaluate, '-', evaluate.length() - 1);
 		if (tmp > opIndex)
 			opIndex = tmp;
@@ -99,25 +99,19 @@ public class Calculator {
 	String opPow(String s1, String s2) {
 		double num1 = Double.parseDouble(s1);
 		double num2 = Double.parseDouble(s2);
-		return calculatePow(num1, (int) num2).toString();
+		return calculatePow(num1, (int) num2, 1).toString();
 	}
-
-	Double calculatePow(double num1, double num2) {
-		if (num1 == 0)
+	
+	Double calculatePow(double base, int exp, double result) {
+		if (base == 0)
 			return new Double(0);
-		else if (num2 == 0)
-			return new Double(1);
-
-		if (num2 == 1)
-			return num1;
-		else if (num2 == -1)
-			return num1;
-		else {
-			if (num2 > 1)
-				return num1 * calculatePow(num1, num2 - 1);
-			else
-				return 1 / num1 / calculatePow(num1, num2 + 1);
-		}
+		
+		if (exp <= -1)
+			return calculatePow(base, ++exp, result / base);
+		else if (exp >= 1)
+			return calculatePow(base, --exp, base * result);
+		else
+			return result;
 	}
 
 }
