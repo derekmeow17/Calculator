@@ -1,6 +1,5 @@
 package git.Calculator;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -9,16 +8,10 @@ import org.junit.Test;
 public class CalculatorTest {
 
 	private Calculator calculator;
-	private Controller controller;
-	private View view;
-	private Validator validator;
 
 	@Before
 	public void setUp() {
 		calculator = new Calculator();
-		view = mock(View.class);
-		validator = mock(Validator.class);
-		controller = new Controller(view, validator);
 	}
 
 	@Test
@@ -88,5 +81,5 @@ public class CalculatorTest {
 		Double result = calculator.calculate("2^(2*4-5)/(-9+5)*2");
 		assertEquals(new Double(-4), result);
 	}
-
+	
 }
